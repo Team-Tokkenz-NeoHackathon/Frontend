@@ -10,9 +10,18 @@ export default function TheaterSeat(props) {
   const navigate = useNavigate();
   const theatre = location.state.theatre;
   const movie = location.state.movie;
+  console.log({theatre, movie})
   const [seats, setSeats] = useState([]);
   // console.log("det", seats);
 const token = localStorage.getItem("jwt_token")
+const handleBook = () => {
+  if(token && seats.length>0){
+  navigate('/payment', {state:{seats, movie:movie._id, theatre:theatre._id}})
+  }
+  if(!token){
+    props.setLogin(true);
+  }
+}
 
   return (
     <div className="relative z-0">
@@ -410,14 +419,8 @@ const token = localStorage.getItem("jwt_token")
             </div>
           </div>
           <button className="rounded-full bg-blue-900 my-4">
-            <div className="rounded-[20px] [background:linear-gradient(-38.77deg,_rgba(191,_191,_191,_0.06),_rgba(0,_0,_0,_0)),_rgba(0,_0,_0,_0.14)] shadow-[-8px_4px_5px_rgba(0,_0,_0,_0.24)] [backdrop-filter:blur(53px)] w-48 h-16  text-white text-5xl text-center font-noto-sans px-4 py-4" onClick={() => {
-              if(token && seats.length>0){
-              navigate('/payment', {state:seats})
-              }
-              if(!token){
-                props.setLogin(true);
-              }
-            }}>
+            <div className="rounded-[20px] [background:linear-gradient(-38.77deg,_rgba(191,_191,_191,_0.06),_rgba(0,_0,_0,_0)),_rgba(0,_0,_0,_0.14)] shadow-[-8px_4px_5px_rgba(0,_0,_0,_0.24)] [backdrop-filter:blur(53px)] w-48 h-16  text-white text-5xl text-center font-noto-sans px-4 py-4" 
+            onClick={handleBook}>
               Book now
             </div>
           </button>
