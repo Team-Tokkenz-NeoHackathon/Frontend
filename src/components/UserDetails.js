@@ -2,8 +2,7 @@ import profileImg from "../assets/profile-img.jpg";
 import React, { useState } from "react";
 import { BsTicketPerforatedFill } from "react-icons/bs";
 import { FaWallet } from "react-icons/fa";
-import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
+
 
 
 
@@ -13,19 +12,15 @@ import { BeaconWallet } from "@taquito/beacon-wallet";
 
 export default function UserDetails(props) {
 
-  const Tezos = new TezosToolkit("https://ghostnet.ecadinfra.com");
-  const wallet = new BeaconWallet({ name: "FlexPass" });
-
-  Tezos.setWalletProvider(wallet);
 
   async function requestPermissions() {
-    try {
-      console.log("Requesting permissions...");
-      const permissions = await wallet.client.requestPermissions();
-      console.log("Got permissions:", permissions.address);
-    } catch (error) {
-      console.log("Got error:", error);
-    }
+    // try {
+    //   console.log("Requesting permissions...");
+      // const permissions = await wallet.client.requestPermissions();
+    //   console.log("Got permissions:", permissions.address);
+    // } catch (error) {
+    //   console.log("Got error:", error);
+    // }
   }
 
   const handleTicket = () => {
