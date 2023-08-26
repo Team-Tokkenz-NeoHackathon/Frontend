@@ -6,15 +6,15 @@ export default function Seats(props) {
     <div>
       <div
         onClick={() => {
-          console.log("tick",props.ticketId)
+          console.log("tick", props.seats);
           // console.log("pro",props.seatNo.slice(2))
           // setIsActive(!isActive);
           // if (!isActive ) {
-            if (props.seats.length<5) {
-              setIsActive(true);
-              props.setSeats(props.seats.concat(props.seatNo));
-              // props.setSeats(props.seats.concat(props.ticketId));
-            } else {
+          if (props.seats.length < 5 && !isActive) {
+            setIsActive(true);
+            props.setSeats(props.seats.concat(props.seatNo));
+            // props.setSeats(props.seats.concat(props.ticketId));
+          } else {
             setIsActive(false);
             props.setSeats(props.seats.filter((seat) => seat !== props.seatNo));
             //TICKEDID = MOVIE-THEATRE-SEAT
