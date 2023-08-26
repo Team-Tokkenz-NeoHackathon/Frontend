@@ -1,92 +1,8 @@
 import React,{useState,useEffect} from 'react'
 
-import TxnActivity from './TxnActivity';
-import Neon, { rpc, sc, u, wallet, tx } from "@cityofzion/neon-js";
-// import {WalletConnectProvider} from "@cityofzion/wallet-connect-sdk-react";
-// import WcSdk from '@cityofzion/wallet-connect-sdk-core'
-// import SignClient from '@walletconnect/sign-client'
+import Web3 from "web3";
 
-// const wcSdk = new WcSdk(await SignClient.init({
-//   projectId: '9c380ba47b6fa8e1354bb21d66e3a351', // the ID of your project on Wallet Connect website
-//   relayUrl: 'wss://relay.walletconnect.com', // we are using walletconnect's official relay server
-//   metadata: {
-//     name: 'MyApplicationName', // your application name to be displayed on the wallet
-//     description: 'My Application description', // description to be shown on the wallet
-//     url: 'http://127.0.0.1:3000/', // url to be linked on the wallet
-//     // icons: ['https://myapplicationdescription.app/myappicon.png'] // icon to be shown on the wallet
-//   }
-// }))
-
-let neoline;
-let neolineN3;
-
-function initDapi() {
-    const initCommonDapi = new Promise((resolve, reject) => {
-        window.addEventListener('NEOLine.NEO.EVENT.READY', (e) => {
-            neoline = new e.target.NEOLine.Init();
-            if (neoline) {
-                resolve(neoline);
-                console.log("dd")
-            } else {
-                reject('common dAPI method failed to load.');
-            }
-            console.log("listener")
-        });
-    });
-    const initN3Dapi = new Promise((resolve, reject) => {
-        window.addEventListener('NEOLine.N3.EVENT.READY', (e) => {
-            neolineN3 = new e.target.NEOLineN3.Init();
-            if (neolineN3) {
-                resolve(neolineN3);
-                console.log("ddN3")
-            } else {
-                reject('N3 dAPI method failed to load.');
-            }
-            console.log("n3 listener")
-        });
-    });
-    initCommonDapi.then(() => {
-        console.log('The common dAPI method is loaded.');
-        return initN3Dapi;
-    }).then(() => {
-        console.log('The N3 dAPI method is loaded.');
-    }).catch((err) => {
-        console.log(err);
-    })
-};
-
-initDapi();
-
-
-const invoke = () =>{
-  neoline.getPublicKey()
-.then(publicKeyData => {
-    const {
-        address,
-        publicKey
-    } = publicKeyData;
-
-    console.log('Account address: ' + address);
-    console.log('Account public key: ' + publicKey);
-})
-.catch((error) => {
-    const {type, description, data} = error;
-    switch(type) {
-        case 'NO_PROVIDER':
-            console.log('No provider available.');
-            break;
-        case 'CONNECTION_DENIED':
-            console.log('The user rejected the request to connect with your dApp');
-            break;
-        default:
-            // Not an expected error object.  Just write the error to the console.
-            console.error(error);
-            break;
-    }
-});
-}
-
-
+ //Check if MetaMask is installed
 
 
 export default function UserDetails(props) {
@@ -94,9 +10,8 @@ export default function UserDetails(props) {
     props.setButton(1);
   };
 
-  const handleConnectWallet = async () => {
-    console.log("wallet connection")
-    invoke()
+  // const handleConnectWallet = async () => {
+  //   console.log("wallet connection")
     // const acc = new wallet.Account()
 //     const publicKey = "03a3355cbb112391ec05231490ddcbd0aec31f018de18fb03440ff65e76f4710f8"
 // const account = Neon.create.account(publicKey)
@@ -105,7 +20,32 @@ export default function UserDetails(props) {
     // wcSdk.manageSession()
     // .then(()=>{console.log("acd")})
     // console.log("abv")
-  };
+  // }
+  const handleConnectWallet = async () =>{ 
+    if (window.ethereum) {
+    const web3 = new Web3(window.ethereum);
+  
+    // Request account access if needed
+    window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .then(() => {
+        // Accounts now exposed
+        web3.eth.getAccounts((error, accounts) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log("Connected to MetaMask with account:", accounts[0]);
+            // Do something with the connected account
+          }
+        });
+      })
+      .catch((error) => {
+       console.error(error);
+      });
+  } else {
+    console.error("Please install MetaMask to use this application.");
+  }}
+  
 
 
 
@@ -132,7 +72,6 @@ export default function UserDetails(props) {
         <div className='h-20 text-white'>
             Wallet Activity
         </div>
-        <TxnActivity/>
       </div>
     </div>
   )
