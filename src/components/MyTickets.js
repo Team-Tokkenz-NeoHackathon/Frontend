@@ -11,8 +11,6 @@ const MyTickets = () => {
         <div className='flex mx-2 my-4 justify-between'>
           <ResellTicket />
           <ResellTicket />
-          <ResellTicket />
-          <ResellTicket />
         </div>
         <div className='text-poppins text-4xl font-medium text-white'>History :</div>
         <div className='w-full h-1/3 flex flex-col overflow-y-scroll mx-2 my-2'>

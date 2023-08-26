@@ -3,7 +3,6 @@ import UserDetails from "../components/UserDetails";
 import bg from "../assets/bg.svg";
 import MyTickets from "../components/MyTickets";
 import MyWallet from "../components/MyWallet";
-import ResellSumamary from "../components/ResellSumamary";
 export default function UserPage(props) {
   const [button, setButton] = useState(1);
 
@@ -21,7 +20,7 @@ export default function UserPage(props) {
       </div>
       <div className="w-full absolute z-10">
         <div className="absolute left-1/4 w-3/4">
-          {button === 1 ? <ResellSumamary /> : <MyWallet />}
+          {button === 1 ? <MyTickets /> : <MyWallet />}
         </div>
       </div>
     </div>
