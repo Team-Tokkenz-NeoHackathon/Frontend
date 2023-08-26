@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Web3 from "web3";
+import axios from "axios";
 import bg from '../assets/order-bg.png'
 
 export default function OrderSummary(props) {
@@ -28,6 +30,60 @@ export default function OrderSummary(props) {
   const taxes = ((seatPrice + convenience) * 0.15).toFixed(2);
   const total = Number(seatPrice) + Number(convenience) + Number(taxes);
   console.log(seatType, seatPrice);
+
+  const handleOrder = async() =>{
+    let ticketIds=[]
+    props.seats.forEach((seat)=>{
+      let ticket = `${props.movie}_${props.theatre}_${seat}`
+      ticketIds.push(ticket)
+    })
+    console.log("or", ticketIds) //***
+
+    const x = localStorage.getItem("jwt_token");
+    if (window.ethereum) {
+      try {
+        const web3 = new Web3(window.ethereum);
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        console.log("Connected to Metamask");
+        window.ethereum
+          .enable()
+          .then(async (accounts) => {
+            const userWalletAddress = accounts[0];
+            // setAddress(userWalletAddress);
+            console.log("User Wallet Address:", userWalletAddress); //***
+
+            //TEST DECREAMENT TO 5%
+            const dec = total *0.05
+            const dollar = dec *0.012
+            const gas = dollar / 2.43
+            console.log("dec",gas) //***
+
+            const token =  JSON.parse(x).token
+            axios({
+              method: "post",
+              // url: "https://flexpass-back.onrender.com/user/login",
+              url: `http://127.0.0.1:8000/user/addAddress/${userWalletAddress}`,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then(function (response) {
+                console("added to db",response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("Please install Metamask");
+    }
+  }
 
   return (
     <div className="rounded-xl flex justify-center">
@@ -93,7 +149,7 @@ export default function OrderSummary(props) {
 
               <hr className="border-1 bg-gray-300 h-px my-4" />
               <div className="flex items-center justify-center w-2/5 m-auto">
-                <div className=" rounded-xl [background:linear-gradient(90.57deg,#628eff,#8740cd_53.13%,#580475)] w-full py-2 mb-2 ">
+                <div className=" rounded-xl [background:linear-gradient(90.57deg,#628eff,#8740cd_53.13%,#580475)] w-full py-2 mb-2 " onClick={handleOrder}>
                   <div className=" py-1 text-center text-5xl font-semibold cursor-pointer">
                     Place Order
                   </div>

@@ -9,8 +9,8 @@ export default function   CardBase() {
   useEffect(() => {
     axios({
       method: "get",
-      url: `https://flexpass-back.onrender.com/movie/getAllMovies`
-      // url: `http://127.0.0.1:8000/movie/getAllMovies`
+      // url: `https://flexpass-back.onrender.com/movie/getAllMovies`
+      url: `http://127.0.0.1:8000/movie/getAllMovies`
     })
       .then((response) => {
         // setSplitInto(response.data.userNames)
@@ -30,6 +30,7 @@ export default function   CardBase() {
 
       <div className="grid grid-cols-3 justify-items-start ">
         {movies.map((movie) => {
+          // console.log(movie)
           return (
             <div onClick={()=>{
               navigate('/theatreSelection',{state:movie});
