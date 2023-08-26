@@ -22,9 +22,12 @@ function App() {
   if (localData) {
     var time = JSON.parse(localData);
     var diff;
+    // console.log("ll", time)
+    // console.log("nn ", now)
     setInterval(() => {
       diff = now - time.time;
-      if (diff > 5 * 60 * 1000) {
+      console.log("diff", diff)
+      if (diff > 20 * 60 * 1000) {
         localStorage.clear();
       }
     }, 1000);
