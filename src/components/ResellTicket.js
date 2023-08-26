@@ -1,7 +1,17 @@
 import React from 'react'
 import { FaLocationDot } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ResellTicket() {
+    const navigate = useNavigate();
+
+    const handleResale = ()=>{
+
+        // navigate('/payment', {state:{seats, movie:movie._id, theatre:theatre._id, status:"first"}})
+        navigate('/payment', {state:{status:"resale"}})
+    }
+
     return (
         <div className="relative w-full h-40">
             <div className='flex bg-[#393d5e] rounded-lg h-40 w-3/4'>
@@ -16,7 +26,7 @@ export default function ResellTicket() {
                             <div className='text-[#9DA8BE] font-2xl font-roboto font-regualar'>Theatre Name</div>
                         </div>
                         <div className='left-0'>
-                            <button class="px-6 py-3 rounded-md bg-orange font-montserrat font-medium font-2xl text-white">Resell+</button>
+                            <button class="px-6 py-3 rounded-md bg-orange font-montserrat font-medium font-2xl text-white" onClick={handleResale}>Resale</button>
                         </div>
                     </div>
                 </div>

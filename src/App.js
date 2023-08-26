@@ -102,6 +102,7 @@ function App() {
               }
             />
             <Route exact path="/payment" element={<PaymentPage />} />
+            {/* <Route exact path="/payment" element={<PaymentPage />} /> */}
           </Routes>
           <Footer />
         </BrowserRouter>

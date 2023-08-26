@@ -16,7 +16,7 @@ export default function TheaterSeat(props) {
 const token = localStorage.getItem("jwt_token")
 const handleBook = () => {
   if(token && seats.length>0){
-  navigate('/payment', {state:{seats, movie:movie._id, theatre:theatre._id}})
+  navigate('/payment', {state:{seats, movie:movie._id, theatre:theatre._id, status:"first"}})
   }
   if(!token){
     props.setLogin(true);
