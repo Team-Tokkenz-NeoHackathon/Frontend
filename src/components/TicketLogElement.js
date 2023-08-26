@@ -1,4 +1,6 @@
 import React from 'react'
+import { FaLocationDot } from "react-icons/fa6";
+
 
 export default function TicketLogElement() {
     return (
@@ -10,13 +12,15 @@ export default function TicketLogElement() {
                 <div className='flex flex-col justify-center items-start'>
                     <div className='font-roboto text-white font-21xl'>Movie Name</div>
                     <div className='font-roboto text-gray-700 font-5xl'>Date Time</div>
-                    <div className='flex font-roboto font-5xl'>
-                        <div className='text-[#9DA8BE]'>Location Icon</div>
-                        <div className='text-[#9DA8BE]'> Theatre Name</div>
-                        <div className="text-[#414A63]">Show Typ</div>
+                    <div className='flex font-roboto'>
+                        <div className='text-[#9DA8BE] font-21xl'><FaLocationDot /></div>
+                        <div className='text-[#9DA8BE] ml-2 font-5xl'>Theatre Name</div>
+                        <div className='text-[#414A63] ml-2 font-5xl'>Show Typ</div>
                     </div>
                 </div>
-                <button class="rounded-none">Sold</button>
+                <div className='mx-12 my-12 px-12 py-6'>
+                    <button class="px-9 py-3 rounded-md bg-blue-500">Sold</button>
+                </div>
             </div>
         </div>
     )

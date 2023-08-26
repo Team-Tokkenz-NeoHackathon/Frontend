@@ -15,7 +15,7 @@ const MyTickets = () => {
           <ResellTicket />
         </div>
         <div className='text-poppins text-4xl font-medium text-white'>History :</div>
-        <div className='flex flex-col overflow-y-scroll mx-2 my-2'>
+        <div className='w-full h-1/3 flex flex-col overflow-y-scroll mx-2 my-2'>
           <TicketLogElement />
           <TicketLogElement />
           <TicketLogElement />
