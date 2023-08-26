@@ -26,7 +26,7 @@ function App() {
     // console.log("nn ", now)
     setInterval(() => {
       diff = now - time.time;
-      console.log("diff", diff)
+      // console.log("diff", diff)
       if (diff > 20 * 60 * 1000) {
         localStorage.clear();
       }
