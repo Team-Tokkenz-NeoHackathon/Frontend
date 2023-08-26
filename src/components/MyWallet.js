@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Web3 from "web3";
+import axios from "axios";
 
 export default function UserDetails(props) {
   const [active, setActive] = useState(0);
   const [sideBarActive, setSideBarActive] = useState(true);
+  const [address, setAddress] = useState();
 
   const toggleActive = () => {
     setSideBarActive(!sideBarActive);
@@ -18,11 +20,44 @@ export default function UserDetails(props) {
   };
 
   const handleConnectWallet = async () => {
+    const x = localStorage.getItem("jwt_token");
+
     if (window.ethereum) {
       try {
         const web3 = new Web3(window.ethereum);
         await window.ethereum.request({ method: "eth_requestAccounts" });
         console.log("Connected to Metamask");
+        window.ethereum
+          .enable()
+          .then(async (accounts) => {
+            const userWalletAddress = accounts[0];
+            setAddress(userWalletAddress);
+            console.log("User Wallet Address:", userWalletAddress);
+            const balanceWei = await web3.eth.getBalance(userWalletAddress);
+            const balanceEth = web3.utils.fromWei(balanceWei, "ether");
+            console.log("Account Balance (Ether):", balanceEth);
+            const token =  JSON.parse(x).token
+            axios({
+              method: "post",
+              // url: "https://flexpass-back.onrender.com/user/login",
+              url: `http://127.0.0.1:8000/user/addAddress/${userWalletAddress}`,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              // data: { email: email, password: password.toString() },
+            })
+              .then(function (response) {
+                console(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+            // console.log("ress",data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+
         // Now you can use the 'web3' instance to interact with the Ethereum network
       } catch (error) {
         console.log(error);
@@ -43,7 +78,7 @@ export default function UserDetails(props) {
           >
             <div className="absolute inset-0 bg-opacity-0 bg-white rounded-full border border-solid border-purple-500"></div>
             <span className="text-base font-medium text-white z-10 px-4 py-2">
-              + Add Wallet
+              {address?address:"+ Add Wallet"}
             </span>
           </button>
         </div>
