@@ -40,18 +40,18 @@ export default function UserDetails(props) {
             axios({
               method: "post",
               // url: "https://flexpass-back.onrender.com/user/login",
-              url: `http://127.0.0.1:8000/user/addAddress/${userWalletAddress}`,
+              url: `https://flexpass-back.onrender.com/user/addAddress/${userWalletAddress}`,
               headers: {
                 Authorization: `Bearer ${token}`,
               },
               // data: { email: email, password: password.toString() },
             })
-              .then(function (response) {
-                console(response);
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
+              // .then(function (response) {
+              //   console(response);
+              // })
+              // .catch(function (error) {
+              //   console.log(error);
+              // });
             // console.log("ress",data);
           })
           .catch((error) => {

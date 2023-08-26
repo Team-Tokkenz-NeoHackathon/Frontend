@@ -14,8 +14,8 @@ export default function LogInPage(props) {
     // console.log(data);
     axios({
       method: "post",
-      // url: "https://flexpass-back.onrender.com/user/login",
-      url: "http://127.0.0.1:8000/user/login",
+      url: "https://flexpass-back.onrender.com/user/login",
+      // url: "http://127.0.0.1:8000/user/login",
       data: { email: email, password: password.toString() },
     })
       .then(function (response) {
