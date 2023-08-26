@@ -10,7 +10,7 @@ export default function PaymentPage(props) {
     return (
         <div className='h-screen w-full flex justify-center items-center'>
             <img className=' w-full h-screen object-cover' alt='' src={bg} />
-            <div className='absolute z-10 w-6/12 h-1/4 mb-72'>
+            <div className='absolute z-10 w-6/12 h-1/4 mb-80'>
                 <OrderSummary seats={data} />
             </div>
         </div>

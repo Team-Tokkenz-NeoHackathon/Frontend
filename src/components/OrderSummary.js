@@ -30,10 +30,10 @@ export default function OrderSummary(props) {
   console.log(seatType, seatPrice);
 
   return (
-    <div className="rounded-xl flex">
+    <div className="rounded-xl flex justify-center">
       <img className="object-cover" src={bg} alt="" />
-      <div className="absolute right-0 z-10">
-        <div className=" flex-col justify-between px-12 py-4">
+      <div className="absolute items-center justify-center z-10">
+        <div className="flex flex-col justify-between py-12">
           <div className="flex flex-col justify-between h-full font-poppins text-white">
             <div className="text-4xl items-center font-semibold">ORDER SUMMARY</div>
             <hr className="border-1 bg-gray-300 h-px my-4" />
