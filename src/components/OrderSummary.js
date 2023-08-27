@@ -1,16 +1,80 @@
 import React from "react";
-// import { ethers } from "ethers";
 import axios from "axios";
 import bg from "../assets/order-bg.png";
+import { u, wallet, rpc, tx, sc } from "@cityofzion/neon-js";
 
 const flexcon1 = require("../flexcon1.json");
-// const { ethers, JsonRpcProvider } = require('ethers');
 
-// const contractAddress = "0xbd1653bC5FD2e4013d55405c8D6900a15823aF3B";
-// const provider = new ethers.providers.JsonRpcProvider("https://evm.ngd.network/");
-// const wallet = new ethers.Wallet("df4db1121f4340e06cd99ef0b65fbb55614cfb7620a2fa50ec4f4cc6a5522464", provider); // Replace with your private key
 
-// const contract = new ethers.Contract(contractAddress, flexcon1.abi, wallet);
+
+let neoline;
+let neolineN3;
+
+function initDapi() {
+    const initCommonDapi = new Promise((resolve, reject) => {
+        window.addEventListener('NEOLine.NEO.EVENT.READY', (e) => {
+            neoline = new e.target.NEOLine.Init();
+            if (neoline) {
+                resolve(neoline);
+                console.log("dd")
+            } else {
+                reject('common dAPI method failed to load.');
+            }
+            console.log("listener")
+        });
+    });
+    const initN3Dapi = new Promise((resolve, reject) => {
+        window.addEventListener('NEOLine.N3.EVENT.READY', (e) => {
+            neolineN3 = new e.target.NEOLineN3.Init();
+            if (neolineN3) {
+                resolve(neolineN3);
+                console.log("ddN3")
+            } else {
+                reject('N3 dAPI method failed to load.');
+            }
+            console.log("n3 listener")
+        });
+    });
+    initCommonDapi.then(() => {
+        console.log('The common dAPI method is loaded.');
+        return initN3Dapi;
+    }).then(() => {
+        console.log('The N3 dAPI method is loaded.');
+    }).catch((err) => {
+        console.log(err);
+    })
+};
+
+const invoke = () =>{
+  neoline.getPublicKey()
+.then(publicKeyData => {
+    const {
+        address,
+        publicKey
+    } = publicKeyData;
+
+    console.log('Account address: ' + address);
+    console.log('Account public key: ' + publicKey);
+})
+.catch((error) => {
+    const {type, description, data} = error;
+    switch(type) {
+        case 'NO_PROVIDER':
+            console.log('No provider available.');y
+            
+            break;
+        case 'CONNECTION_DENIED':
+            console.log('The user rejected the request to connect with your dApp');
+            break;
+        default:
+            // Not an expected error object.  Just write the error to the console.
+            console.error(error);
+            break;
+    }
+});
+}
+
+initDapi();
 
 
 export default function OrderSummary(props) {
@@ -33,49 +97,36 @@ export default function OrderSummary(props) {
   const taxes = ((seatPrice + convenience) * 0.15).toFixed(2);
   const total = Number(seatPrice) + Number(convenience) + Number(taxes);
 
-  // const placeOrderInSmartContract = async (theaterId, movieId, seats, cost) => {
-  //   try {
-  //     // Make the transaction to the mintTicket function
-  //     const tx = await contract.mintTicket(theaterId, movieId, seats, {
-  //       value: ethers.utils.parseEther(cost.toString()), // Convert cost to Wei
-  //     });
-  
-  //     // Wait for the transaction to be mined
-  //     await tx.wait();
-  
-  //     console.log("Order placed in smart contract");
-  //   } catch (error) {
-  //     console.log("Error placing order in smart contract:", error);
-  //   }
-  // };
+  const sendNeo = async (fromAddress, toAddress, amount) => {
+    try {
+      const privateKey = "KyvkFtwVYU5hAAnjt4SNMtgXxhMidHEm2WGe4HwgKZsbxMHbT4Rc"; // Replace with your private key
+      const account = new wallet.Account(privateKey);
 
-  // const handleOrder = async () => {
-  //   const theaterId = "yourTheaterId";
-  //   const movieId = "yourMovieId";
-  //   const userWalletAddress = await connectToMetamask();
+      const config = {
+        net: "TestNet", // Change to "MainNet" if needed
+        account,
+      };
 
-  //   if (userWalletAddress) {
-  //     const token = getToken();
-  //     const dec = total * 0.05;
-  //     const dollar = dec * 0.012;
-  //     const gas = dollar / 2.43;
+      const rpcClient = new rpc.RPCClient(config.net);
 
-  //     try {
-  //       // await addAddressToDatabase(userWalletAddress, token);
-  //       await placeOrderInSmartContract(theaterId, movieId, seats, total);
+      const tx = new tx.Transaction(config.net);
+      tx.addOutput(new tx.TransactionOutput({
+        assetId: u.reverseHex(u.ASSET_ID.GAS),
+        value: u.fixed82num(amount),
+        scriptHash: wallet.getScriptHashFromAddress(toAddress),
+      }));
 
-  
-  //       // Perform additional actions after successful order placement
-  //       console.log("Order placed successfully!");
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //     }
-  //   } else {
-  //     console.log("Please install Metamask");
-  //   }
-  // };
+      const response = await rpcClient.sendRawTransaction(tx);
 
-
+      if (response.result) {
+        console.log("Transaction sent successfully:", response.result);
+      } else {
+        console.error("Transaction failed:", response.error);
+      }
+    } catch (error) {
+      console.error("Error sending transaction:", error);
+    }
+  };
 
   const getToken = () => {
     const x = localStorage.getItem("jwt_token");
@@ -85,20 +136,21 @@ export default function OrderSummary(props) {
     return null; // Return null or handle the case where token is not found
   };
 
-  // const addAddressToDatabase = async (address, token) => {
-  //   try {
-  //     await axios({
-  //       method: "post",
-  //       url: `http://10.1.40.13:8000/user/addAddress/${address}`,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log("Added to database");
-  //   } catch (error) {
-  //     console.log("Error:", error);
-  //   }
-  // };
+  const addAddressToDatabase = async (address, token) => {
+    try {
+      await axios({
+        method: "post",
+        url: `http://10.1.40.13:8000/user/addAddress/${address}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Added to database");
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
 
   return (
     <div className="rounded-xl flex justify-center">
@@ -171,9 +223,9 @@ export default function OrderSummary(props) {
               <hr className="border-1 bg-gray-300 h-px my-4" />
               <div className="flex items-center justify-center w-2/5 m-auto">
                 <div
-                  className=" rounded-xl [background:linear-gradient(90.57deg,#628eff,#8740cd_53.13%,#580475)] w-full py-2 mb-2 ">
+                  className=" rounded-xl [back  ground:linear-gradient(90.57deg,#628eff,#8740cd_53.13%,#580475)] w-full py-2 mb-2 ">
                   <div className=" py-1 text-center text-5xl font-semibold cursor-pointer">
-                    {/* <button onClick={}>Place Order</button> */}
+                    <button onClick={invoke()}>Place Order</button>
                   </div>
                 </div>
               </div>
