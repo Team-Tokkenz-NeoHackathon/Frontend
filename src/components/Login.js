@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PiEyeClosedBold, PiEyeBold } from "react-icons/pi";
 import axios from "axios";
 import check from "../assets/check-mark.png";
+import Web3 from "web3";
 export default function LogInPage(props) {
   const [see, setSee] = useState(false);
   const [email, setEmail] = useState("");
