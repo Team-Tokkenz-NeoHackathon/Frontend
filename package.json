@@ -18,6 +18,10 @@
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
+    "ethers": "5.7.2",
+    "fs-extra": "^11.1.0",
+    "solc": "0.8.7-fixed",
+    
     "web-vitals": "^2.1.4",
     "web3": "^4.1.1"
   },
@@ -49,6 +53,7 @@
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
+    "ethers": "^5.7.2",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "process": "^0.11.10",
