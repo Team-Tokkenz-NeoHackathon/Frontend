@@ -1,8 +1,79 @@
 import React, { useState } from "react";
-import Web3 from "web3";
+// import Web3 from "web3";
 import axios from "axios";
 import { FaCopy } from "react-icons/fa6";
 import WalletLog from "./WalletLog";
+
+import TxnActivity from './TxnActivity';
+import Neon, { rpc, sc, u, wallet, tx } from "@cityofzion/neon-js";
+
+let neoline;
+let neolineN3;
+
+function initDapi() {
+    const initCommonDapi = new Promise((resolve, reject) => {
+        window.addEventListener('NEOLine.NEO.EVENT.READY', (e) => {
+            neoline = new e.target.NEOLine.Init();
+            if (neoline) {
+                resolve(neoline);
+                console.log("dd")
+            } else {
+                reject('common dAPI method failed to load.');
+            }
+            console.log("listener")
+        });
+    });
+    const initN3Dapi = new Promise((resolve, reject) => {
+        window.addEventListener('NEOLine.N3.EVENT.READY', (e) => {
+            neolineN3 = new e.target.NEOLineN3.Init();
+            if (neolineN3) {
+                resolve(neolineN3);
+                console.log("ddN3")
+            } else {
+                reject('N3 dAPI method failed to load.');
+            }
+            console.log("n3 listener")
+        });
+    });
+    initCommonDapi.then(() => {
+        console.log('The common dAPI method is loaded.');
+        return initN3Dapi;
+    }).then(() => {
+        console.log('The N3 dAPI method is loaded.');
+    }).catch((err) => {
+        console.log(err);
+    })
+};
+
+const invoke = () =>{
+  neoline.getPublicKey()
+.then(publicKeyData => {
+    const {
+        address,
+        publicKey
+    } = publicKeyData;
+
+    console.log('Account address: ' + address);
+    console.log('Account public key: ' + publicKey);
+})
+.catch((error) => {
+    const {type, description, data} = error;
+    switch(type) {
+        case 'NO_PROVIDER':
+            console.log('No provider available.');
+            break;
+        case 'CONNECTION_DENIED':
+            console.log('The user rejected the request to connect with your dApp');
+            break;
+        default:
+            // Not an expected error object.  Just write the error to the console.
+            console.error(error);
+            break;
+    }
+});
+}
+
+initDapi();
 
 export default function UserDetails(props) {
   const [active, setActive] = useState(0);
@@ -21,52 +92,122 @@ export default function UserDetails(props) {
     }
   };
 
+//   let neoline;
+// let neolineN3;
+
+// function initDapi() {
+//     const initCommonDapi = new Promise((resolve, reject) => {
+//         window.addEventListener('NEOLine.NEO.EVENT.READY', (e) => {
+//             neoline = new e.target.NEOLine.Init();
+//             if (neoline) {
+//                 resolve(neoline);
+//                 console.log("dd")
+//             } else {
+//                 reject('common dAPI method failed to load.');
+//             }
+//             console.log("listener")
+//         });
+//     });
+//     const initN3Dapi = new Promise((resolve, reject) => {
+//         window.addEventListener('NEOLine.N3.EVENT.READY', (e) => {
+//             neolineN3 = new e.target.NEOLineN3.Init();
+//             if (neolineN3) {
+//                 resolve(neolineN3);
+//                 console.log("ddN3")
+//             } else {
+//                 reject('N3 dAPI method failed to load.');
+//             }
+//             console.log("n3 listener")
+//         });
+//     });
+//     initCommonDapi.then(() => {
+//         console.log('The common dAPI method is loaded.');
+//         return initN3Dapi;
+//     }).then(() => {
+//         console.log('The N3 dAPI method is loaded.');
+//     }).catch((err) => {
+//         console.log(err);
+//     })
+// };
+
+// initDapi();
+
+
+// const invoke = () =>{
+//   neoline.getPublicKey()
+// .then(publicKeyData => {
+//     const {
+//         address,
+//         publicKey
+//     } = publicKeyData;
+
+//     console.log('Account address: ' + address);
+//     console.log('Account public key: ' + publicKey);
+// })
+// .catch((error) => {
+//     const {type, description, data} = error;
+//     switch(type) {
+//         case 'NO_PROVIDER':
+//             console.log('No provider available.');
+//             break;
+//         case 'CONNECTION_DENIED':
+//             console.log('The user rejected the request to connect with your dApp');
+//             break;
+//         default:
+//             // Not an expected error object.  Just write the error to the console.
+//             console.error(error);
+//             break;
+//     }
+// });
+// }
+
   const handleConnectWallet = async () => {
-    const x = localStorage.getItem("jwt_token");
+    invoke()
+    // const x = localStorage.getItem("jwt_token");
 
-    if (window.ethereum) {
-      try {
-        const web3 = new Web3(window.ethereum);
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        console.log("Connected to Metamask");
-        window.ethereum
-          .enable()
-          .then(async (accounts) => {
-            const userWalletAddress = accounts[0];
-            setAddress(userWalletAddress);
-            console.log("User Wallet Address:", userWalletAddress);
-            const balanceWei = await web3.eth.getBalance(userWalletAddress);
-            const balanceEth = web3.utils.fromWei(balanceWei, "ether");
-            console.log("Account Balance (Ether):", balanceEth);
-            const token = JSON.parse(x).token
-            axios({
-              method: "post",
-              // url: "https://flexpass-back.onrender.com/user/login",
-              url: `https://flexpass-back.onrender.com/user/addAddress/${userWalletAddress}`,
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              // data: { email: email, password: password.toString() },
-            })
-              // .then(function (response) {
-              //   console(response);
-              // })
-              // .catch(function (error) {
-              //   console.log(error);
-              // });
-            // console.log("ress",data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+    // if (window.ethereum) {
+    //   try {
+    //     const web3 = new Web3(window.ethereum);
+    //     await window.ethereum.request({ method: "eth_requestAccounts" });
+    //     console.log("Connected to Metamask");
+    //     window.ethereum
+    //       .enable()
+    //       .then(async (accounts) => {
+    //         const userWalletAddress = accounts[0];
+    //         setAddress(userWalletAddress);
+    //         console.log("User Wallet Address:", userWalletAddress);
+    //         const balanceWei = await web3.eth.getBalance(userWalletAddress);
+    //         const balanceEth = web3.utils.fromWei(balanceWei, "ether");
+    //         console.log("Account Balance (Ether):", balanceEth);
+    //         const token = JSON.parse(x).token
+    //         axios({
+    //           method: "post",
+    //           // url: "https://flexpass-back.onrender.com/user/login",
+    //           url: `https://flexpass-back.onrender.com/user/addAddress/${userWalletAddress}`,
+    //           headers: {
+    //             Authorization: `Bearer ${token}`,
+    //           },
+    //           // data: { email: email, password: password.toString() },
+    //         })
+    //           // .then(function (response) {
+    //           //   console(response);
+    //           // })
+    //           // .catch(function (error) {
+    //           //   console.log(error);
+    //           // });
+    //         // console.log("ress",data);
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error:", error);
+    //       });
 
-        // Now you can use the 'web3' instance to interact with the Ethereum network
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      console.log("Please install Metamask");
-    }
+    //     // Now you can use the 'web3' instance to interact with the Ethereum network
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // } else {
+    //   console.log("Please install Metamask");
+    // }
   };
 
   return (
@@ -80,12 +221,12 @@ export default function UserDetails(props) {
               <b className="relative text-21xl font-manrope text-white text-left mb-5">Rs. 1910.00</b>
               <div className="mx-1 my-2">
                 <div className="flex items-center justify-around">
-                  <div className="relative rounded-[20px] box-border w-3/4 h-6 border-[0.5px] border-solid border-white items-center">
-                    <div className="flex justify-around items-center">
+                  {/* <div className="relative rounded-[20px] box-border w-3/4 h-6 border-[0.5px] border-solid border-white items-center"> */}
+                    {/* <div className="flex justify-around items-center">
                       <div className="relative text-sm overflow-hidden"><FaCopy /></div>
                       <div className="relative text-[0.95rem] font-light font-montserrat text-white text-center">0xfb7b2ad98f9e622b487c582b080cbf4bcfa2b08f</div>
-                    </div>
-                  </div>
+                    </div> */}
+                  {/* </div> */}
                   <button
                     className="ml-2 flex justify-center items-center relative h-8 w-1/4 rounded-full bg-purple-800"
                     onClick={handleConnectWallet}
