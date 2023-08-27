@@ -75,21 +75,7 @@ export default function OrderSummary(props) {
   //   }
   // };
 
-//   const connectToMetamask = async () => {
-//   if (window.ethereum) {
-//     try {
-//       await window.ethereum.request({ method: "eth_requestAccounts" });
-//       const provider = new ethers.providers.Web3Provider(window.ethereum);
-//       const signer = provider.getSigner();
-//       const address = await signer.getAddress();
-//       console.log("Connected to Metamask");
-//       return address;
-//     } catch (error) {
-//       console.error("Error:", error);
-//     }
-//   }
-//   return null;
-// };
+
 
   const getToken = () => {
     const x = localStorage.getItem("jwt_token");
