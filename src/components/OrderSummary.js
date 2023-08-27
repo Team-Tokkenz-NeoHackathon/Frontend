@@ -32,12 +32,17 @@ export default function OrderSummary(props) {
   console.log(seatType, seatPrice);
 
   const handleOrder = async() =>{
-    let ticketIds=[]
-    props.seats.forEach((seat)=>{
-      let ticket = `${props.movie}_${props.theatre}_${seat}`
-      ticketIds.push(ticket)
-    })
-    console.log("or", ticketIds) //***
+    // let ticketIds=[]
+    // props.seats.forEach((seat)=>{
+    //   let ticket = `${props.movie}_${props.theatre}_${seat}`
+    //   ticketIds.push(ticket)
+    // })
+    const tickets = {
+      movie:props.movie,
+      theatre:props.theatre,
+      seats:seats
+    }
+    console.log("or", tickets) //***
 
     const x = localStorage.getItem("jwt_token");
     if (window.ethereum) {
