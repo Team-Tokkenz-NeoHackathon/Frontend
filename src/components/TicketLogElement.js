@@ -20,7 +20,7 @@ export default function TicketLogElement(props) {
             <div className="text-[#9DA8BE] font-21xl">
               <FaLocationDot />
             </div>
-            <div className="text-[#9DA8BE] ml-2 font-5xl">PVR, Grand Glada</div>
+            <div className="text-[#9DA8BE] ml-2 font-5xl">PVR, Grand Galada</div>
             <div className="text-[#414A63] ml-2 font-5xl">Show Type</div>
           </div>
         </div>

@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import Web3 from "web3";
 import axios from "axios";
 import { FaCopy } from "react-icons/fa6";
-// import percent1 from '1.svg';
-// import percent2 from '2.svg';
+import WalletLog from "./WalletLog";
 
 export default function UserDetails(props) {
   const [active, setActive] = useState(0);
@@ -75,7 +74,7 @@ export default function UserDetails(props) {
       <div className="flex flex-col">
         <div className="font-poppins font-bold text-white text-[28px] mx-14 mb-8">My Wallet : </div>
         <div className="flex justify-around items-center">
-          <div className="relative rounded-[20px] [background:linear-gradient(rgba(0,_0,_0,_0.14),_rgba(0,_0,_0,_0.14)),_linear-gradient(-38.77deg,_rgba(191,_191,_191,_0.06),_rgba(0,_0,_0,_0))] shadow-[-8px_4px_5px_rgba(0,_0,_0,_0.24)] [backdrop-filter:blur(53px)] w-1/2 h-[11rem] text-center text-lg text-white font-montserrat py-6 px-4 ml-4 mr-4">
+          <div className="relative rounded-[20px] [background:linear-gradient(rgba(0,_0,_0,_0.14),_rgba(0,_0,_0,_0.14)),_linear-gradient(-38.77deg,_rgba(191,_191,_191,_0.06),_rgba(0,_0,_0,_0))] shadow-[-8px_4px_5px_rgba(0,_0,_0,_0.24)] [backdrop-filter:blur(53px)] w-1/2 h-[11rem] text-center text-lg text-white font-montserrat py-6 px-4 ml-12 mr-12">
             <div className="flex flex-col">
               <div className="relative text-3xl montserrat text-white text-left opacity-[0.6] mb-2">Total Balance</div>
               <b className="relative text-21xl font-manrope text-white text-left mb-5">Rs. 1910.00</b>
@@ -97,7 +96,7 @@ export default function UserDetails(props) {
               </div>
             </div>
           </div>
-          <div className="relative rounded-[20px] [background:linear-gradient(rgba(0,_0,_0,_0.14),_rgba(0,_0,_0,_0.14)),_linear-gradient(-38.77deg,_rgba(191,_191,_191,_0.06),_rgba(0,_0,_0,_0))] shadow-[-8px_4px_5px_rgba(0,_0,_0,_0.24)] [backdrop-filter:blur(53px)] w-1/2 h-[11rem] text-center text-lg text-white font-montserrat py-6 px-4 mr-4">
+          <div className="relative rounded-[20px] [background:linear-gradient(rgba(0,_0,_0,_0.14),_rgba(0,_0,_0,_0.14)),_linear-gradient(-38.77deg,_rgba(191,_191,_191,_0.06),_rgba(0,_0,_0,_0))] shadow-[-8px_4px_5px_rgba(0,_0,_0,_0.24)] [backdrop-filter:blur(53px)] w-1/2 h-[11rem] text-center text-lg text-white font-montserrat py-6 px-4 mr-12">
             <div className="flex flex-col">
               <div className="relative text-3xl montserrat text-white text-left opacity-[0.6]">Total Purchase</div>
               <div className="flex justify-center items-center">
@@ -112,27 +111,12 @@ export default function UserDetails(props) {
               </div>
             </div>
           </div>
+
+        </div>
+        <div className="mt-6 mx-12 mb-2 rounded-t-lg">
+          <WalletLog />
         </div>
       </div>
     </div>
   );
 }
-
-
-
-{/* <div className=" w-[11.13rem] h-[4.5rem] text-left">
-              <b className="absolute top-[calc(50%_-_36px)] left-[calc(50%_-_89px)] tracking-[-0.02em] leading-[2rem] opacity-[0.6]">Total balance</b>
-              <b className="absolute top-[calc(50%_+_4px)] left-[calc(50%_-_89px)] text-[2rem] tracking-[-0.02em] leading-[2rem] font-manrope">Rs. 1,910.00</b>
-            </div>
-            <div className="absolute top-[calc(50%_+_30px)] left-[calc(50%_+_62px)] w-[5.63rem] h-[2.24rem] text-[0.63rem] font-poppins">
-              <button
-                className="flex justify-center items-center relative h-12 w-40 rounded-full bg-purple-800"
-                onClick={handleConnectWallet}
-              >
-                <div className="font-medium font-poppins text-white text-center text-base">+Add Money</div>
-              </button>
-            </div>
-             */}
-
-
-
