@@ -60,7 +60,7 @@ const invoke = () =>{
     const {type, description, data} = error;
     switch(type) {
         case 'NO_PROVIDER':
-            console.log('No provider available.');y
+            console.log('No provider available.');
             
             break;
         case 'CONNECTION_DENIED':
