@@ -10,7 +10,7 @@ export default function   CardBase() {
     axios({
       method: "get",
       // url: `https://flexpass-back.onrender.com/movie/getAllMovies`
-      url: `http://127.0.0.1:8000/movie/getAllMovies`
+      url: `http://10.1.40.13:8000/movie/getAllMovies`
     })
       .then((response) => {
         // setSplitInto(response.data.userNames)
